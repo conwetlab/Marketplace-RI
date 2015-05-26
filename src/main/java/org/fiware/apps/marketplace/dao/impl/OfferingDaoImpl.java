@@ -86,7 +86,7 @@ public class OfferingDaoImpl extends MarketplaceHibernateDao implements Offering
 				.setParameter("offeringName", offeringName)
 				.list();
 		
-		if (offerings.size() == 0) {
+		if (offerings.isEmpty()) {
 			throw new OfferingNotFoundException(String.format("Offering %s not found in "
 					+ "description %s (Store: %s)", offeringName, descriptionName, storeName));
 		} else {

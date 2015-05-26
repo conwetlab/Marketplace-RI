@@ -1,0 +1,139 @@
+@CHARSET "UTF-8";
+
+
+/***************************************************************************************
+ *  COMPONENT DEFINITION LIST
+ ***************************************************************************************/
+
+.dl-group {
+    position: relative;
+    display: block;
+    margin: 0px;
+}
+
+.dl-group:after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.dl-group dl {
+    position: relative;
+    display: block;
+    width: 50%;
+    float: left;
+    margin: 0px 0px 10px;
+    padding: 0px;
+}
+
+.dl-group dl.dl-block {
+    width: 100%;
+}
+
+.dl-group dl > dt {
+    font-weight: 700;
+}
+
+.dl-group dl > dd {
+    margin-left: 0px;
+    color: rgb(80, 80, 80);
+}
+
+@media (max-width: 768px) {
+
+    .dl-group dl {
+        width: 100%;
+    }
+
+    .dl-group dl:last-child {
+        margin-bottom: 0px;
+    }
+
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - LIST
+ ***************************************************************************************/
+
+.list-heading {
+    padding: 8px 10px;
+    font: normal 400 14px/1.45 Helvetica, Arial, sans-serif;
+}
+
+.list-heading > .title {
+    color: #909fa7;
+}
+
+.list-body > .list-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    color: rgb(120, 120, 120);
+    background-color: rgb(254, 254, 254);
+}
+
+.list-body > .list-item:focus,
+.list-body > .list-item:hover {
+    color: rgb(30, 180, 230);
+    text-decoration: none;
+    background-color: rgb(250, 250, 250);
+}
+
+.list-options {
+    position: relative;
+    display: block;
+    text-align: center;
+}
+
+.list-options > .list-element {
+    width: 200px;
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - LIST GROUP
+ ***************************************************************************************/
+
+.list-group .list-group-heading {
+    display: block;
+    margin-bottom: 5px;
+    padding: 5px;
+    font: normal 700 14px/20px Helvetica, Arial, sans-serif;
+    color: rgb(120, 160, 170);
+    border-bottom: solid 1px rgb(215, 225, 225);
+}
+
+.list-group .list-group-body {
+    display: block;
+}
+
+.list-group .list-group-body .alert {
+    margin-bottom: 5px;
+}
+
+/***************************************************************************************
+ *  COMPONENT LIST GROUP - ITEM
+ ***************************************************************************************/
+
+.list-group-item {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    padding: 8px 5px;
+    color: rgb(90, 90, 90);
+}
+
+.list-group .list-group-item:hover {
+    color: rgb(20, 170, 215);
+    background-color: rgb(240, 240, 240);
+}
+
+.list-group > .alert:first-child {
+    margin-top: 10px;
+}
+
+.list-group-item > .item-icon {
+    width: 16px;
+    text-align: center;
+    line-height: 20px;
+    vertical-align: baseline;
+}

@@ -70,7 +70,7 @@ public class FIWAREClientTest {
 			String userName = "user";
 			String displayName = "User Name";
 			String email = "user@fiware.org";
-			String json = "{\"id\":1,\"actorId\":2487,\"nickName\":\"" + userName + "\","
+			String json = "{\"id\":1,\"actorId\":2487,\"id\":\"" + userName + "\","
 					+ "\"displayName\":\"" + displayName + "\",\"email\":\"" + email + "\"}";
 
 			// Mock

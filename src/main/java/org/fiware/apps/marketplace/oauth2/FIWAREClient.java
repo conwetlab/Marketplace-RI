@@ -46,7 +46,6 @@ import org.pac4j.oauth.profile.JsonHelper;
 import org.scribe.model.OAuthConfig;
 import org.scribe.model.Token;
 import org.scribe.model.SignatureType;
-import org.scribe.oauth.ProxyOAuth20ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -80,7 +79,7 @@ public class FIWAREClient extends BaseOAuth20Client<FIWAREProfile>{
 		super.internalInit();
 
 		this.scopeValue = "";
-		this.service = new ProxyOAuth20ServiceImpl(new FIWAREApi(this.serverURL), 
+		this.service = new ProxyOAuthFIWARE(new FIWAREApi(this.serverURL), 
 				new OAuthConfig(this.key, this.secret,
 						this.callbackUrl,
 						SignatureType.Header,
@@ -100,8 +99,9 @@ public class FIWAREClient extends BaseOAuth20Client<FIWAREProfile>{
 		FIWAREProfile profile = new FIWAREProfile();
 
 		if (body != null) {
+			
 			final JsonNode json = JsonHelper.getFirstNode(body);
-			profile.setId(JsonHelper.get(json, "nickName"));
+			profile.setId(JsonHelper.get(json, "id"));
 			for (final String attribute : new FIWAREAttributesDefinition().getPrincipalAttributes()) {
 				profile.addAttribute(attribute, JsonHelper.get(json, attribute));
 			}
@@ -109,7 +109,7 @@ public class FIWAREClient extends BaseOAuth20Client<FIWAREProfile>{
 			// FIXME: By default, we are adding the default Role...
 			profile.addRole("ROLE_USER");
 
-			// User information should be stored in the local users table //
+			// User information should be stored in the local users table
 			User user;
 			String username = (String) profile.getUsername();
 			String email = (String) profile.getEmail();

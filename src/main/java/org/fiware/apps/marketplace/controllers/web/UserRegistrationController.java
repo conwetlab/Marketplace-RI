@@ -33,6 +33,8 @@ package org.fiware.apps.marketplace.controllers.web;
  */
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
@@ -121,11 +123,14 @@ public class UserRegistrationController extends AbstractController {
         } catch (ValidationException e) {
             logger.info("A form field is not valid", e);
 
-            model.addAttribute("field_displayName", displayName);
-            model.addAttribute("field_email", email);
-            model.addAttribute("field_password", password);
-            model.addAttribute("field_passwordConfirm", passwordConfirm);
+            Map<String, String> formInfo = new HashMap<String, String>();
 
+            formInfo.put("displayName", displayName);
+            formInfo.put("email", email);
+            formInfo.put("password", password);
+            formInfo.put("passwordConfirm", passwordConfirm);
+
+            model.addAttribute("form_data", formInfo);
             model.addAttribute("form_error", e);
 
             view = new ModelAndView("core.register", model);

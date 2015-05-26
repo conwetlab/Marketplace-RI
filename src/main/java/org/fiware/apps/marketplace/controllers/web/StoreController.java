@@ -34,6 +34,8 @@ package org.fiware.apps.marketplace.controllers.web;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -121,7 +123,7 @@ public class StoreController extends AbstractController {
 			store.setDisplayName(form.getDisplayName());
 			store.setUrl(form.getUrl());
 			store.setComment(form.getComment());
-            store.setImageBase64(form.getImageData());
+			store.setImageBase64(form.getImageBase64());
 
 			getStoreBo().save(store);
 
@@ -145,10 +147,13 @@ public class StoreController extends AbstractController {
 		} catch (ValidationException e) {
 			logger.info("A form field is not valid", e);
 
-			model.addAttribute("field_displayName", form.getDisplayName());
-			model.addAttribute("field_url", form.getUrl());
-			model.addAttribute("field_comment", form.getComment());
+			Map<String, String> formInfo = new HashMap<String, String>();
 
+			formInfo.put("displayName", form.getDisplayName());
+			formInfo.put("url", form.getUrl());
+			formInfo.put("comment", form.getComment());
+
+			model.addAttribute("form_data", formInfo);
 			model.addAttribute("form_error", e);
 			view = new ModelAndView("store.create", model);
 			builder = Response.status(Status.BAD_REQUEST).entity(view);
@@ -227,7 +232,7 @@ public class StoreController extends AbstractController {
             store.setDisplayName(form.getDisplayName());
             store.setUrl(form.getUrl());
             store.setComment(form.getComment());
-            store.setImageBase64(form.getImageData());
+            store.setImageBase64(form.getImageBase64());
 
             getStoreBo().update(storeName, store);
 
@@ -258,10 +263,13 @@ public class StoreController extends AbstractController {
         } catch (ValidationException e) {
             logger.info("A form field is not valid", e);
 
-            model.addAttribute("field_displayName", form.getDisplayName());
-            model.addAttribute("field_url", form.getUrl());
-            model.addAttribute("field_comment", form.getComment());
+			Map<String, String> formInfo = new HashMap<String, String>();
 
+			formInfo.put("displayName", form.getDisplayName());
+			formInfo.put("url", form.getUrl());
+			formInfo.put("comment", form.getComment());
+
+			model.addAttribute("form_data", formInfo);
             model.addAttribute("form_error", e);
             view = new ModelAndView("store.detail", model);
             builder = Response.status(Status.BAD_REQUEST).entity(view);

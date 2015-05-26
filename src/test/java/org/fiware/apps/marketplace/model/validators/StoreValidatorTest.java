@@ -64,7 +64,7 @@ public class StoreValidatorTest {
 		store.setComment("This is a basic comment");
 		store.setLasteditor(store.getCreator());
 		store.setName("name");
-		store.setDisplayName("store");
+		store.setDisplayName("store-. ");
 		store.setUrl("https://store.lab.fiware.org");
 		store.setRegistrationDate(new Date());
 
@@ -178,9 +178,10 @@ public class StoreValidatorTest {
 	@Test
 	public void testDisplayNameTooLong() {
 		Store store = generateValidStore();
-		store.setDisplayName("1234567890123456789012345678901");
+		store.setDisplayName("123456789012345678901234567890123456789012345678901234567890"
+				+ "12345678901234567890123456789012345678901");
 
-		assertInvalidNewStore(store, "displayName", String.format(TOO_LONG_PATTERN, 20));
+		assertInvalidNewStore(store, "displayName", String.format(TOO_LONG_PATTERN, 100));
 	}
 	
 	@Test

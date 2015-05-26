@@ -5,76 +5,123 @@
 
 <tiles-definitions>
 
-	<!-- Core - Login View -->
-	<definition name="core.login" template="/WEB-INF/views/base.jsp">
-		<put-attribute name="content" value="/WEB-INF/views/core/login-form.jsp" />
-	</definition>
+    <!-- APP LAYOUTS -->
 
-	<!-- Core - Register Form View -->
-	<definition name="core.register" template="/WEB-INF/views/base.jsp">
-		<put-attribute name="content" value="/WEB-INF/views/core/registration-form.jsp" />
-	</definition>
+    <definition name="app.anon" template="/WEB-INF/views/base.jsp">
+        <put-attribute name="styles" value="/WEB-INF/views/core/styles.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/core/footer.jsp" />
+        <put-attribute name="scripts" value="/WEB-INF/views/core/scripts.jsp" />
+    </definition>
 
-	<!-- Core - Error View -->
-	<definition name="core.error" template="/WEB-INF/views/base.jsp">
-		<put-attribute name="content" value="/WEB-INF/views/core/error.jsp" />
-	</definition>
+    <definition name="app.auth" extends="app.anon">
+        <put-attribute name="navbar" value="/WEB-INF/views/core/auth-navbar.jsp" />
+        <put-attribute name="panels" value="/WEB-INF/views/core/auth-panels.jsp" />
+        <put-attribute name="scripts.extras" value="/WEB-INF/views/core/auth-scripts.jsp" />
+    </definition>
 
-    <!-- User Resource - Detail View -->
-    <definition name="user.detail" template="/WEB-INF/views/base.jsp">
+    <!-- ANONYMOUS USER -->
+
+    <!-- Login View -->
+    <definition name="core.login" extends="app.anon">
+        <put-attribute name="navbar" value="/WEB-INF/views/core/login-navbar.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/core/login-content.jsp" />
+    </definition>
+
+    <!-- Registration View -->
+    <definition name="core.register" extends="app.anon">
+        <put-attribute name="navbar" value="/WEB-INF/views/core/registration-navbar.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/core/registration-content.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/core/registration-scripts.jsp" />
+    </definition>
+
+    <!-- Error View -->
+    <definition name="core.error" extends="app.anon">
+        <put-attribute name="navbar" value="/WEB-INF/views/core/error-navbar.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/core/error-content.jsp" />
+    </definition>
+
+    <!-- AUTHENTICATED USER -->
+
+    <!-- ACCOUNT VIEWS -->
+
+    <!-- Detail View -->
+    <definition name="user.detail" extends="app.auth">
         <put-attribute name="content" value="/WEB-INF/views/users/detail-content.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/users/detail-scripts.jsp" />
     </definition>
 
-    <!-- User Resource - Description Filter - List View -->
-    <definition name="user.description.list" template="/WEB-INF/views/base.jsp">
-        <put-attribute name="content" value="/WEB-INF/views/users/description-list-content.jsp" />
+    <!-- Credentials View -->
+    <definition name="user.credentials" extends="app.auth">
+        <put-attribute name="content" value="/WEB-INF/views/users/credentials-content.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/users/credentials-scripts.jsp" />
     </definition>
 
-    <!-- Offering Resource - List View -->
-    <definition name="offering.list" template="/WEB-INF/views/base.jsp">
+    <!-- OFFERING VIEWS -->
+
+    <!-- List View -->
+    <definition name="offering.list" extends="app.auth">
         <put-attribute name="content" value="/WEB-INF/views/offerings/list-content.jsp" />
-        <put-attribute name="extra-scripts" value="/WEB-INF/views/offerings/list-scripts.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/offerings/list-scripts.jsp" />
     </definition>
 
-    <!-- Offering Resource - Detail View -->
-    <definition name="offering.detail" template="/WEB-INF/views/base.jsp">
+    <!-- Detail View -->
+    <definition name="offering.detail" extends="app.auth">
         <put-attribute name="content" value="/WEB-INF/views/offerings/detail-content.jsp" />
-        <put-attribute name="extra-scripts" value="/WEB-INF/views/offerings/detail-scripts.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/offerings/detail-scripts.jsp" />
     </definition>
 
-    <!-- Store Resource - Create View -->
-    <definition name="store.create" template="/WEB-INF/views/base.jsp">
+    <!-- Bookmark List View -->
+    <definition name="offering.bookmark.list" extends="app.auth">
+        <put-attribute name="content" value="/WEB-INF/views/offerings/bookmark-list-content.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/offerings/bookmark-list-scripts.jsp" />
+    </definition>
+
+    <!-- STORE VIEWS -->
+
+    <!-- Create View -->
+    <definition name="store.create" extends="app.auth">
         <put-attribute name="content" value="/WEB-INF/views/stores/create-content.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/stores/form-scripts.jsp" />
     </definition>
 
-    <!-- Store Resource - Detail View -->
-    <definition name="store.detail" template="/WEB-INF/views/base.jsp">
+    <!-- Detail View -->
+    <definition name="store.detail" extends="app.auth">
         <put-attribute name="content" value="/WEB-INF/views/stores/detail-content.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/stores/form-scripts.jsp" />
     </definition>
 
-    <!-- Store Resource - Offering Filter - List View -->
-    <definition name="store.offering.list" template="/WEB-INF/views/base.jsp">
-        <put-attribute name="content" value="/WEB-INF/views/stores/offering-list-content.jsp" />
-        <put-attribute name="extra-scripts" value="/WEB-INF/views/stores/offering-list-scripts.jsp" />
-    </definition>
-
-    <!-- Store Resource - User Description Filter - List View -->
-    <definition name="store.description.list" template="/WEB-INF/views/base.jsp">
+    <!-- Description List View -->
+    <definition name="store.description.list" extends="app.auth">
         <put-attribute name="content" value="/WEB-INF/views/stores/description-list-content.jsp" />
     </definition>
 
-    <!-- Description Resource - Create View -->
-    <definition name="description.create" template="/WEB-INF/views/base.jsp">
+    <!-- Offering List View -->
+    <definition name="store.offering.list" extends="app.auth">
+        <put-attribute name="content" value="/WEB-INF/views/stores/offering-list-content.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/stores/offering-list-scripts.jsp" />
+    </definition>
+
+    <!-- DESCRIPTION VIEWS -->
+
+    <!-- List View -->
+    <definition name="user.description.list" extends="app.auth">
+        <put-attribute name="content" value="/WEB-INF/views/users/description-list-content.jsp" />
+    </definition>
+
+    <!-- Create View -->
+    <definition name="description.create" extends="app.auth">
         <put-attribute name="content" value="/WEB-INF/views/descriptions/create-content.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/descriptions/create-scripts.jsp" />
     </definition>
 
-    <!-- Description Resource - Detail View -->
-    <definition name="description.detail" template="/WEB-INF/views/base.jsp">
+    <!-- Detail View -->
+    <definition name="description.detail" extends="app.auth">
         <put-attribute name="content" value="/WEB-INF/views/descriptions/detail-content.jsp" />
+        <put-attribute name="scripts.view" value="/WEB-INF/views/descriptions/detail-scripts.jsp" />
     </definition>
 
-    <!-- Description Resource - Offering Filter - List View -->
-    <definition name="description.offering.list" template="/WEB-INF/views/base.jsp">
+    <!-- Offering List View -->
+    <definition name="description.offering.list" extends="app.auth">
         <put-attribute name="content" value="/WEB-INF/views/descriptions/offering-list-content.jsp" />
     </definition>
 

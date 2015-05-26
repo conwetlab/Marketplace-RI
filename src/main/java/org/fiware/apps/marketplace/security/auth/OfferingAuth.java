@@ -63,5 +63,22 @@ public class OfferingAuth extends AbstractAuth<Offering> {
 	public boolean canList(Store store) {
 		return true;
 	}
+	
+	/**
+	 * Determines if a user can bookmark an offering
+	 * @param offering The offering to be bookmarked
+	 * @return true if the user is allowed to bookmark the offering. False otherwise
+	 */
+	public boolean canBookmark(Offering offering) {
+		return true;
+	}
+	
+	/**
+	 * Determines if a user can list the offering that they have bookmarked
+	 * @return true if the user is allowed to list his/her bookmarked offerings
+	 */
+	public boolean canListBookmarked() {
+		return true;
+	}
 
 }

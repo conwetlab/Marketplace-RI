@@ -119,6 +119,10 @@ public class OfferingController extends AbstractController {
             model.addAttribute("offering", offering);
             model.addAttribute("title", offering.getDisplayName() + " - " + getContextName());
 
+            if (offeringBo.getAllBookmarkedOfferings().contains(offering)) {
+                model.addAttribute("bookmark", true);
+            }
+
             view = new ModelAndView("offering.detail", model);
             builder = Response.ok();
         } catch (UserNotFoundException e) {
@@ -150,4 +154,36 @@ public class OfferingController extends AbstractController {
 
         return builder.entity(view).build();
     }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("bookmarks")
+    public Response bookmarkListView(
+            @Context HttpServletRequest request) {
+
+        ModelAndView view;
+        ModelMap model = new ModelMap();
+        ResponseBuilder builder;
+        User user;
+
+        try {
+            user = getCurrentUser();
+
+            model.addAttribute("user", user);
+            model.addAttribute("title", "My bookmarks - " + getContextName());
+
+            addFlashMessage(request, model);
+
+            view = new ModelAndView("offering.bookmark.list", model);
+            builder = Response.ok();
+        } catch (UserNotFoundException e) {
+            logger.warn("User not found", e);
+
+            view = buildErrorView(Status.INTERNAL_SERVER_ERROR, e.getMessage());
+            builder = Response.serverError();
+        }
+
+        return builder.entity(view).build();
+    }
+
 }

@@ -287,4 +287,90 @@ public class OfferingServiceTest {
 				getOfferings()).isEqualTo(oferrings);
 	}
 	
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////// BOOKMARK //////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////
+
+	
+	private void testBookmarkOfferingExceptcion(Exception e, int httpCode, 
+			ErrorType errorType, String message) {
+		
+		try {
+			doThrow(e).when(offeringBoMock).bookmark(anyString(), anyString(), anyString());
+			
+			// Call the method
+			String offeringName = "offering";
+			String descriptionName = "description";
+			String storeName = "store";
+			
+			// Call the method
+			Response res = offeringService.bookmark(storeName, descriptionName, offeringName);
+			
+			// Verify that the BO has been called with the correct arguments
+			verify(offeringBoMock).bookmark(storeName, descriptionName, offeringName);
+			
+			// Check the response
+			GenericRestTestUtils.checkAPIError(res, httpCode, errorType, 
+					message);
+		
+		} catch (Exception ex) {
+			fail("Exception not expected", ex);
+		}
+	}
+	
+	private void testBookmarkOffering404(Exception e) {
+		testBookmarkOfferingExceptcion(e, 404, ErrorType.NOT_FOUND, e.getMessage());
+	}
+	
+	@Test
+	public void testBookmarkOfferingNotAuthorized() {
+		User user = mock(User.class);
+		when(user.getUserName()).thenReturn("userName");
+		Exception e = new NotAuthorizedException("list offerings");
+		testBookmarkOfferingExceptcion(e, 403, ErrorType.FORBIDDEN, e.getMessage());
+	}
+	
+	@Test
+	public void testBookmarkOfferingNotFound() {
+		Exception e = new OfferingNotFoundException("offering not found");
+		testBookmarkOffering404(e);
+	}
+	
+	@Test
+	public void testBookmarkOfferingDescriptionNotFound() {
+		Exception e = new DescriptionNotFoundException("description not found");
+		testBookmarkOffering404(e);
+	}
+	
+	@Test
+	public void testBookmarkOfferingStoreNotFound() {
+		Exception e = new StoreNotFoundException("store not found");
+		testBookmarkOffering404(e);
+	}
+	
+	@Test
+	public void testBookmarkOfferingUnexpectedException() {
+		Exception e = new RuntimeException("Unexpected expection");
+		testGetOfferingExceptcion(e, 500, ErrorType.INTERNAL_SERVER_ERROR, e.getMessage());
+	}
+	
+	@Test
+	public void testBookmarkOffering() throws Exception {
+		String storeName = "store";
+		String descriptionName = "description";
+		String offeringName = "offering";
+		
+		// Call the function
+		Response res = offeringService.bookmark(storeName, descriptionName, offeringName);
+		
+		// Verify that the BO has been called properly
+		verify(offeringBoMock).bookmark(storeName, descriptionName, offeringName);
+		
+		// Check the response
+		assertThat(res.getStatus()).isEqualTo(204);
+		
+	}
+
+	
 }

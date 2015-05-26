@@ -33,6 +33,8 @@ package org.fiware.apps.marketplace.controllers.web;
  */
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -78,6 +80,7 @@ public class UserAccountController extends AbstractController {
         try {
             model.addAttribute("title", "Account Settings - " + getContextName());
             model.addAttribute("user", getCurrentUser());
+            model.addAttribute("currentView", "detail");
 
             addFlashMessage(request, model);
 
@@ -141,10 +144,14 @@ public class UserAccountController extends AbstractController {
         } catch (ValidationException e) {
             logger.info("A form field is not valid", e);
 
-            model.addAttribute("field_displayName", displayName);
-            model.addAttribute("field_email", email);
-            model.addAttribute("field_company", company);
+            Map<String, String> formInfo = new HashMap<String, String>();
 
+            formInfo.put("userName", userName);
+            formInfo.put("displayName", displayName);
+            formInfo.put("email", email);
+            formInfo.put("company", company);
+
+            model.addAttribute("form_data", formInfo);
             model.addAttribute("form_error", e);
 
             view = new ModelAndView("user.detail", model);
@@ -152,6 +159,35 @@ public class UserAccountController extends AbstractController {
         }
 
         return builder.build();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("password")
+    public Response credentialsView(
+            @Context HttpServletRequest request) {
+
+        ModelAndView view;
+        ModelMap model = new ModelMap();
+        ResponseBuilder builder;
+
+        try {
+            model.addAttribute("title", "Credentials - " + getContextName());
+            model.addAttribute("user", getCurrentUser());
+            model.addAttribute("currentView", "credentials");
+
+            addFlashMessage(request, model);
+
+            view = new ModelAndView("user.credentials", model);
+            builder = Response.ok();
+        } catch (UserNotFoundException e) {
+            logger.warn("User not found", e);
+
+            view = buildErrorView(Status.INTERNAL_SERVER_ERROR, e.getMessage());
+            builder = Response.serverError();
+        }
+
+        return builder.entity(view).build();
     }
 
     @POST
@@ -175,18 +211,18 @@ public class UserAccountController extends AbstractController {
         try {
             currentUser = getCurrentUser();
             model.addAttribute("user", currentUser);
-            model.addAttribute("title", "Account Settings - " + getContextName());
+            model.addAttribute("title", "Credentials - " + getContextName());
 
             user.setPassword(password);
-            
+
             // Validate old password
             if (!getUserBo().checkCurrentUserPassword(oldPassword)) {
             	throw new ValidationException("oldPassword", "The password given is not valid.");
             }
-            
+
             // Exception risen if passwords don't match
             checkPasswordConfirmation(password, passwordConfirm);
-            
+
             getUserBo().update(currentUser.getUserName(), user);
 
             session = request.getSession();
@@ -214,7 +250,7 @@ public class UserAccountController extends AbstractController {
 
             model.addAttribute("form_error", e);
 
-            view = new ModelAndView("user.detail", model);
+            view = new ModelAndView("user.credentials", model);
             builder = Response.status(Status.BAD_REQUEST).entity(view);
         }
 

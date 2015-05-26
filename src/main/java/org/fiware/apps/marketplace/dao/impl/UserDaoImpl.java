@@ -77,7 +77,7 @@ public class UserDaoImpl  extends MarketplaceHibernateDao implements UserDao {
 				.setParameter("userName", userName)
 				.list();
 		
-		if (list.size() == 0) {
+		if (list.isEmpty()) {
 			throw new UserNotFoundException("User " + userName + " not found");
 		} else {
 			return (User) list.get(0);
@@ -93,7 +93,7 @@ public class UserDaoImpl  extends MarketplaceHibernateDao implements UserDao {
 				.setParameter("email", email)
 				.list();
 		
-		if (list.size() == 0) {
+		if (list.isEmpty()) {
 			throw new UserNotFoundException("User with email" + email + " not found");
 		} else {
 			return (User) list.get(0);

@@ -1,0 +1,88 @@
+@CHARSET "UTF-8";
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT TAB - TAB GROUP
+ ***************************************************************************************/
+
+.tab-group {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT TAB - TAB
+ ***************************************************************************************/
+
+.tab-group .tab {
+    position: relative;
+    display: table-cell;
+    width: 1%;
+    padding: 0px 10px 0px 0px;
+}
+
+.tab-group .tab:last-child {
+    padding-right: 0px;
+}
+
+.tab-group .tab > a {
+    position: relative;
+    display: block;
+    padding: 8px 10px;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+}
+
+.tab-group .tab > a:hover {
+    background-color: rgb(235, 240, 250);
+}
+
+.tab-group .tab.active > a,
+.tab-group .tab.active > a:hover {
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: rgb(65, 130, 215);
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT TAB - CONTEXTUAL CLASSES
+ ***************************************************************************************/
+
+.tab.tab-danger > a {
+    color: rgb(215, 120, 120);
+}
+
+.tab.tab-danger > a:hover {
+    color: rgb(160, 60, 60);
+    background-color: rgb(250, 230, 230);
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT TAB - TAB GROUP - VERTICAL
+ ***************************************************************************************/
+
+@media (min-width: 768px) {
+
+    .tab-group-vertical .tab {
+        display: block;
+        width: 100%;
+        margin: 0px 0px 5px;
+        padding: 0px;
+    }
+
+    .tab-group-vertical .tab:last-child {
+        margin-bottom: 0px;
+    }
+
+    .tab-group-vertical .tab > a {
+        text-align: left;
+    }
+
+    .tab-group-vertical .tab > a > .fa:first-child {
+        width: 20px;
+        text-align: center;
+    }
+
+}

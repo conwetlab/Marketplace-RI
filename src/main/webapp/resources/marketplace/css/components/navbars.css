@@ -1,0 +1,61 @@
+@CHARSET "UTF-8";
+
+/**
+ * Copyright (c) 2015, CoNWeT Lab., Universidad Politécnica de Madrid
+ * Code licensed under BSD 3-Clause (https://github.com/conwetlab/Marketplace-RI/blob/master/LICENSE)
+ */
+
+/****************************************************************************************
+ * COMPONENT NAVBAR
+ ****************************************************************************************/
+
+.navbar {
+    position: relative;
+    display: block;
+    padding: 8px 0px;
+    background-color: rgb(250, 250, 250);
+}
+
+/****************************************************************************************
+ * COMPONENT NAVBAR - HEADER
+ ****************************************************************************************/
+
+.navbar-header {
+    position: relative;
+    display: block;
+    padding: 4px 0px;
+    margin: 0px 10px 0px 0px;
+    float: left;
+}
+
+.navbar-header .navbar-brand {
+    color: rgb(100, 100, 100);
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.navbar-header .navbar-brand:focus,
+.navbar-header .navbar-brand:hover {
+    color: rgb(70, 70, 70);
+}
+
+/****************************************************************************************
+ * COMPONENT NAVBAR - ELEMENT
+ ****************************************************************************************/
+
+.navbar-element * {
+    margin-bottom: 0px !important;
+}
+
+/****************************************************************************************
+ * COMPONENT NAVBAR - ALIGNMENT - STATIC TOP
+ ****************************************************************************************/
+
+.navbar-fixed-top {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    border-bottom: solid 1px rgb(210, 220, 230);
+    z-index: 30;
+}

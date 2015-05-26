@@ -1,0 +1,45 @@
+@CHARSET "UTF-8";
+
+/**
+ * Copyright (c) 2015, CoNWeT Lab., Universidad Politécnica de Madrid
+ * Code licensed under BSD 3-Clause (https://github.com/conwetlab/WMarket/blob/master/LICENSE)
+ */
+
+/****************************************************************************************
+ * COMPONENT STORE
+ ****************************************************************************************/
+
+.store-group {
+    max-height: 287px;
+    overflow-y: auto;
+}
+
+.store-heading,
+.store-body {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.store-heading {
+    width: 1%;
+}
+
+.store-body {
+    width: 100%;
+    padding-left: 10px;
+}
+
+.store-body .store-name,
+.store-body .store-url {
+    position: relative;
+    display: block;
+}
+
+.store-body .store-name {
+    font-weight: 700;
+}
+
+.store-body .store-url {
+    color: rgb(100, 100, 100);
+}

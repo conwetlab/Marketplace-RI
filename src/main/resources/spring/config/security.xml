@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
@@ -9,29 +8,30 @@
 
 	<http auto-config="true">
 		<!-- Login -->
-		<form-login login-page="/login" username-parameter="username" password-parameter="password"
-			default-target-url="/" authentication-failure-url="/login?err=1" />
-		
-	    <!-- Log the user out -->
-		<logout logout-url="/logout" logout-success-url="/login?out=1" delete-cookies="JSESSIONID" invalidate-session="true" />
+		<form-login login-page="/login" username-parameter="username"
+			password-parameter="password" default-target-url="/"
+			authentication-failure-url="/login?err=1" />
 
-        <!-- Default URLs that are visible for everyone -->
+		<!-- Log the user out -->
+		<logout logout-url="/logout" logout-success-url="/login?out=1"
+			delete-cookies="JSESSIONID" invalidate-session="true" />
+
+		<!-- Default URLs that are visible for everyone -->
 		<intercept-url pattern="/vocabulary/**" access="ROLE_ANONYMOUS,ROLE_USER" />
 		<intercept-url pattern="/demoservices/**" access="ROLE_ANONYMOUS,ROLE_USER" />
 		<intercept-url pattern="/media/**" access="ROLE_ANONYMOUS,ROLE_USER" />
-		
+
 		<!-- This URL can be accessed anonymously to create a new account -->
 		<intercept-url pattern="/api/v2/user/**" access="ROLE_ANONYMOUS,ROLE_USER" />
 		<intercept-url pattern="/login" access="ROLE_ANONYMOUS" />
 		<intercept-url pattern="/register" access="ROLE_ANONYMOUS" />
 		<intercept-url pattern="/resources/**" access="ROLE_ANONYMOUS,ROLE_USER" />
-		
+
 		<!-- Security rule for the rest of URLs -->
 		<intercept-url pattern="/**" access="ROLE_USER" />
 	</http>
 
-	<beans:bean id="encoder"
-		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 	<authentication-manager>
 		<authentication-provider user-service-ref="userManagementService">
