@@ -1,0 +1,78 @@
+@CHARSET "UTF-8";
+
+/**
+ * Copyright (c) 2015, CoNWeT Lab., Universidad Politécnica de Madrid
+ * Code licensed under BSD 3-Clause (https://github.com/conwetlab/WMarket/blob/master/LICENSE)
+ */
+
+/****************************************************************************************
+ * COMPONENT PAYMENT-PLAN
+ ****************************************************************************************/
+
+.payment-plan-group {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.payment-plan {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0px auto 10px;
+}
+
+.payment-plan .panel-title {
+    font-size: 20px;
+    line-height: 22px;
+    margin-bottom: 5px;
+}
+
+.payment-plan .panel-body {
+    padding-top: 0px;
+}
+
+@media (min-width: 768px /* Tablets */) {
+
+    .payment-plan {
+        width: 48%;
+    }
+
+}
+
+@media (min-width: 992px /* Desktops */) {
+
+    .payment-plan {
+        width: 30%;
+    }
+
+}
+
+/****************************************************************************************
+ * COMPONENT PAYMENT-PLAN OFFERS
+ ****************************************************************************************/
+
+.payment-plan .list-group {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.payment-plan .list-group-item {
+    cursor: default;
+    width: 49%;
+    margin: 0px auto;
+    padding: 10px 5px;
+ }
+
+.payment-plan .list-group-item .currency {
+    margin-left: 5px;
+ }
+
+.payment-plan .list-group-item .units {
+    margin-bottom: 0px;
+ }
+
+.payment-plan .list-group-item .value {
+    font-weight: 700;
+    margin-bottom: 0px;
+ }

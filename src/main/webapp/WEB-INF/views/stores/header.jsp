@@ -1,37 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="t" uri="http://tiles.apache.org/tags-tiles" %>
 
-<c:set var="isStoreOwner" value="${ store.creator.userName == user.userName }"></c:set>
-
-<c:if test="${ isStoreOwner }">
-
-  <form name="store_delete_form" method="post" action="${ pageContext.request.contextPath }/stores/${ store.name }/delete">
-    <!-- <p class="text-justify">This operation cannot be undone. All the offerings and descriptions that are contained in this store will be deleted too. Please be certain.</p> -->
-  </form>
-
-  <script>
-    var deleteStore = function deleteStore() {
-      document.store_delete_form.submit();
-    };
-  </script>
-
-</c:if>
+<c:set var="isOwner" value="${ store.creator.userName == user.userName }"></c:set>
 
 <div class="panel panel-default">
+  <div class="panel-heading text-center">
+    <span class="image-thumbnail">
+      <c:choose>
+      <c:when test="${ not empty store.imagePath }">
 
-  <div class="panel-heading">
-
-    <c:if test="${ not empty store.imagePath }">
-      <span class="image-thumbnail image-thumbnail-lg">
         <img class="image image-circle" src="${ pageContext.request.contextPath }/${ store.imagePath }">
-      </span>
-    </c:if>
 
-    <span class="panel-title">${ store.displayName }</span>
-  </div><!-- /.panel-heading -->
+      </c:when>
+      <c:otherwise>
 
+        <span class="image image-circle image-default-darker">
+          <span class="fa fa-building fa-inverse"></span>
+        </span>
+
+      </c:otherwise>
+      </c:choose>
+    </span>
+    <span class="panel-title store-displayname">${ store.displayName }</span>
+  </div>
   <div class="panel-body">
     <div class="tab-group tab-group-vertical">
 
@@ -83,17 +73,31 @@
         </a>
       </div><!-- /.tab -->
 
-      <c:if test="${ isStoreOwner }">
+      <c:if test="${ isOwner }">
 
         <div class="tab tab-danger">
           <a href="javascript:deleteStore()">
             <span class="fa fa-trash"></span>
             <span class="hidden-sm">Delete store</span>
           </a>
-        </div><!-- /.tab -->
+        </div>
 
       </c:if>
 
     </div>
   </div>
 </div>
+
+<c:if test="${ isOwner }">
+
+  <form name="store_delete_form" method="post" action="${ pageContext.request.contextPath }/stores/${ store.name }/delete">
+    <!-- <p class="text-justify">This operation cannot be undone. All the offerings and descriptions that are contained in this store will be deleted too. Please be certain.</p> -->
+  </form>
+
+  <script>
+    var deleteStore = function deleteStore() {
+      document.store_delete_form.submit();
+    };
+  </script>
+
+</c:if>

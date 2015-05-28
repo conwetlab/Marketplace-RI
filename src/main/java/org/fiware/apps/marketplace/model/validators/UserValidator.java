@@ -65,7 +65,7 @@ public class UserValidator {
 
 		// Check basic fields when a user is created
 		if (checkRequiredFields) {
-			basicValidator.validateRequired("userName", user.getUserName());
+			//basicValidator.validateRequired("userName", user.getUserName());
 			basicValidator.validateRequired("displayName", user.getDisplayName());
 			basicValidator.validateRequired("email", user.getEmail());
 			basicValidator.validateRequired("password", user.getPassword());
@@ -94,10 +94,12 @@ public class UserValidator {
 
 		// Check password
 		if (user.getPassword() != null) {
-			basicValidator.validateLength("password", user.getPassword(), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH);
+			basicValidator.validateLength("password", user.getPassword(), 
+					PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH);
 			
 			// Check that password contains one letter, one number and one special character
-			basicValidator.validatePattern("password", user.getPassword(), "^.*(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!#$%&?]).*$", 
+			basicValidator.validatePattern("password", user.getPassword(), 
+					"^.*(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!#$%&?]).*$", 
 					"Password must contain one number, one letter and one unique character such as !#$%&?");
 		}
 

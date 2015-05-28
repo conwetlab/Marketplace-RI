@@ -47,12 +47,12 @@ public class FIWAREApi extends DefaultApi20 {
 		this.SERVER_URL = serverURL;
 	}
 
-	private static final String AUTHORIZATION_URL = "%s/authorize" + 
+	private static final String AUTHORIZATION_URL = "%s/oauth2/authorize" + 
 			"?client_id=%s&redirect_uri=%s&scope=%s&response_type=code";
 
 	@Override
 	public String getAccessTokenEndpoint() {
-		return String.format("%s/token", this.SERVER_URL);
+		return String.format("%s/oauth2/token", this.SERVER_URL);
 	}
 
 	@Override

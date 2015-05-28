@@ -34,6 +34,7 @@ package org.fiware.apps.marketplace.controllers.rest.v2;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -65,7 +66,7 @@ public class OfferingService {
 	
 	@GET
 	@Produces({"application/xml", "application/json"})
-	@Path("/{offeringName}")
+	@Path("{offeringName}")
 	public Response getOffering(
 			@PathParam("storeName") String storeName, 
 			@PathParam("descriptionName") String descriptionName,
@@ -79,8 +80,29 @@ public class OfferingService {
 			response = Response.status(Status.OK).entity(offering).build();
 		} catch (NotAuthorizedException ex) {
 			response = ERROR_UTILS.notAuthorizedResponse(ex);
-		} catch (OfferingNotFoundException | StoreNotFoundException | 
-				DescriptionNotFoundException ex) {
+		} catch (OfferingNotFoundException | StoreNotFoundException | DescriptionNotFoundException ex) {
+			response = ERROR_UTILS.entityNotFoundResponse(ex);
+		} catch (Exception ex) {
+			response = ERROR_UTILS.internalServerError(ex);
+		}
+		
+		return response;
+	}
+	
+	@POST
+	@Path("{offeringName}/bookmark")
+	public Response bookmark(@PathParam("storeName") String storeName, 
+			@PathParam("descriptionName") String descriptionName,
+			@PathParam("offeringName") String offeringName) {
+		
+		Response response;
+		
+		try {
+			offeringBo.bookmark(storeName, descriptionName, offeringName);
+			response = Response.status(Status.NO_CONTENT).build();
+		} catch (NotAuthorizedException ex) {
+			response = ERROR_UTILS.notAuthorizedResponse(ex);
+		} catch (OfferingNotFoundException | StoreNotFoundException | DescriptionNotFoundException ex) {
 			response = ERROR_UTILS.entityNotFoundResponse(ex);
 		} catch (Exception ex) {
 			response = ERROR_UTILS.internalServerError(ex);
@@ -91,7 +113,6 @@ public class OfferingService {
 	
 	@GET
 	@Produces({"application/xml", "application/json"})
-	@Path("/")
 	public Response listOfferingsInDescription(
 			@PathParam("storeName") String storeName, 
 			@PathParam("descriptionName") String descriptionName,
@@ -100,12 +121,12 @@ public class OfferingService {
 		
 		Response response;
 		
-		if (offset < 0 || max <= 0) {
+		if (offset < 0 || max <= 0) {	
 			// Offset and Max should be checked
 			response = ERROR_UTILS.badRequestResponse(String.format(
 					"offset (%d) and/or max (%d) are not valid", offset, max));
 		} else {
-			try {			
+			try {
 				Offerings offerings = new Offerings(offeringBo.getDescriptionOfferingsPage(
 						storeName, descriptionName, offset, max));
 				response = Response.status(Status.OK).entity(offerings).build();

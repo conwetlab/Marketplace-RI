@@ -161,8 +161,9 @@ public class StoreServiceIT extends AbstractIT {
 	
 	@Test
 	public void testCreationDisplayNameTooLong() {
-		testCreationInvalidField("abcdefghijklmnopqrstuvwxyz", "https://store.lab.fiware.org", "", "displayName", 
-				String.format(MESSAGE_TOO_LONG, 20));
+		testCreationInvalidField("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
+				+ "abcdefghijklmnopqrstuvw", "https://store.lab.fiware.org", "", "displayName", 
+				String.format(MESSAGE_TOO_LONG, 100));
 	}
 	
 	@Test
@@ -288,8 +289,9 @@ public class StoreServiceIT extends AbstractIT {
 	
 	@Test
 	public void testUpdateDisplayNameTooLong() {
-		testUpdateInvalidField("abcdefghijklmnopqrstuvwxyz", "https://store.lab.fiware.org", "", "displayName", 
-				String.format(MESSAGE_TOO_LONG, 20));
+		testUpdateInvalidField("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
+				+ "abcdefghijklmnopqrstuvw", "https://store.lab.fiware.org", "", "displayName", 
+				String.format(MESSAGE_TOO_LONG, 100));
 	}
 	
 	@Test

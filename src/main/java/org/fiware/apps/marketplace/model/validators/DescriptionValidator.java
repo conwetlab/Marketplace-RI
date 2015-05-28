@@ -61,7 +61,7 @@ public class DescriptionValidator {
 
 		// Check basic fields when a description is created
 		if (checkRequiredFields) {
-			basicValidator.validateRequired("name", description.getName());
+			//basicValidator.validateRequired("name", description.getName());
 			basicValidator.validateRequired("displayName", description.getDisplayName());
 			basicValidator.validateRequired("url", description.getUrl());
 			

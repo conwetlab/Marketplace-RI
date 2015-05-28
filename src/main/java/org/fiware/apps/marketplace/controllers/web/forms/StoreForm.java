@@ -11,7 +11,7 @@ public class StoreForm {
     private String url;
     private String comment;
     private String imageName;
-    private String imageData;
+    private String imageBase64;
 
     public StoreForm() {}
 
@@ -31,8 +31,8 @@ public class StoreForm {
         return imageName;
     }
 
-    public String getImageData() {
-        return imageData;
+    public String getImageBase64() {
+        return imageBase64;
     }
 
     @FormParam("displayName")
@@ -55,11 +55,11 @@ public class StoreForm {
         this.imageName = imageName;
     }
 
-    @FormParam("imageData")
+    @FormParam("imageBase64")
     @PartType("application/octet-stream")
-    public void setImageData(byte[] imageData) {
-        if (imageData != null && imageData.length > 0) {
-            this.imageData = Base64.encodeBase64String(imageData);
+    public void setImageData(byte[] imageBase64) {
+        if (imageBase64 != null && imageBase64.length > 0) {
+            this.imageBase64 = Base64.encodeBase64String(imageBase64);
         }
     }
 

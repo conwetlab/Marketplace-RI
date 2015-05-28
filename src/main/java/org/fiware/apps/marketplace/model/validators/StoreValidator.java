@@ -64,7 +64,7 @@ public class StoreValidator {
 		// Check basic fields when a store is created
 		if (checkRequiredFields) {
 			
-			basicValidator.validateRequired("name", store.getName());
+			//basicValidator.validateRequired("name", store.getName());
 			basicValidator.validateRequired("displayName", store.getDisplayName());
 			basicValidator.validateRequired("url", store.getUrl());
 			

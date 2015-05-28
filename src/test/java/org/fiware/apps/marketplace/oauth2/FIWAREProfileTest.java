@@ -54,8 +54,8 @@ public class FIWAREProfileTest {
 	@Test
 	public void testUserName() {
 		String userName = "userName";
-		when(profile.getAttribute(anyString())).thenReturn(userName);
+		when(profile.getId()).thenReturn(userName);
 		assertThat(profile.getUsername()).isEqualTo(userName);
-		verify(profile).getAttribute("nickName");
+		verify(profile).getId();
 	}
 }

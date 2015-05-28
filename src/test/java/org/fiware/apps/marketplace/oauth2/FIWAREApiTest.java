@@ -51,7 +51,7 @@ public class FIWAREApiTest {
 		String redirectURI = "http://fi-ware.org";
 		String scope = "profile,store";
 		OAuthConfig config = new OAuthConfig(clientId, null, redirectURI, null, scope, null);		
-		String expectedURL = SERVER_URL + "/authorize?client_id=" + clientId + 
+		String expectedURL = SERVER_URL + "/oauth2/authorize?client_id=" + clientId + 
 				"&redirect_uri=" + OAuthEncoder.encode(redirectURI) + "&scope=" + 
 				OAuthEncoder.encode(scope) + "&response_type=code";
 		
@@ -60,7 +60,7 @@ public class FIWAREApiTest {
 	
 	@Test
 	public void testGetAccessTokenEndpoint() {
-		assertThat(api.getAccessTokenEndpoint()).isEqualTo(SERVER_URL + "/token");
+		assertThat(api.getAccessTokenEndpoint()).isEqualTo(SERVER_URL + "/oauth2/token");
 	}
 	
 	@Test

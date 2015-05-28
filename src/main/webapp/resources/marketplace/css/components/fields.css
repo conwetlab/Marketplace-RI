@@ -1,0 +1,210 @@
+@CHARSET "UTF-8";
+
+
+/***************************************************************************************
+ *  DEFAULT THEME - FORM CONTROL
+ ***************************************************************************************/
+
+input[type="password"],
+input[type="text"],
+select {
+    position: relative;
+    min-height: 30px;
+    font: normal 400 14px/20px Helvetica, Arial, sans-serif;
+}
+
+textarea {
+    position: relative;
+    font: normal 400 14px/20px Helvetica, Arial, sans-serif;
+    resize: none;
+}
+
+.field-control {
+    display: block;
+    width: 100%;
+    padding: 4px 8px;
+    border: solid 1px rgb(220, 220, 220);
+    border-radius: 4px;
+    color: rgb(80, 80, 80);
+    background-color: rgb(255, 255, 255);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.field-control:focus {
+    outline: 0;
+    border-color: rgba(102, 175, 233, 0.9);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
+                0px 0px 5px rgba(102, 175, 233, 0.75);
+    z-index: 5;
+}
+
+.field-control.disabled,
+.field-control[disabled] {
+    pointer-events: none;
+    cursor: not-allowed;
+    background-color: rgb(240, 240, 240);
+    opacity: .70;
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - FORM FIELD
+ ***************************************************************************************/
+
+.form-field {
+    position: relative;
+    display: block;
+    margin: 0px 0px 10px;
+}
+
+.form-field > .btn-addon:last-child,
+.form-field > .btn-addon + .form-control {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.form-field > .btn-addon:first-child,
+.form-field.form-addon > .field-control:not(:last-child) {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.form-field > .btn-addon:first-child {
+    margin-right: -5px;
+}
+
+.form-field > .btn-addon:last-child {
+    margin-left: -5px;
+}
+
+.form-field-error {
+    margin: 5px 0px 0px 10px;
+    font: normal 400 14px/20px Helvetica, Arial, sans-serif;
+    color: rgb(160, 60, 60);
+}
+
+.form-options {
+    text-align: center;
+}
+
+form .row:last-child .form-field {
+    margin-bottom: 0px;
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT FORM - FIELD LABEL
+ ***************************************************************************************/
+
+.field-label {
+    margin: 0px 0px 5px;
+    font-weight: 700;
+}
+
+.field-label > small {
+    margin-left: 5px;
+    font-weight: 400;
+    font-size: 13px;
+    color: rgb(140, 140, 140);
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT FORM - FIELD CONTROL
+ ***************************************************************************************/
+
+.field-control {
+    margin: 0px 0px 5px;
+}
+
+.field-control.readonly,
+.field-control[readonly] {
+    cursor: default;
+    pointer-events: none;
+    background-color: rgb(245, 245, 245);
+}
+
+.field-control.static {
+    cursor: default;
+    pointer-events: none;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT FORM - FIELD CONTROL GROUP
+ ***************************************************************************************/
+
+.field-control-group {
+    position: relative;
+    display: table;
+    margin: 0px 0px 5px;
+}
+
+.field-control-group .field-control {
+    display: table-cell;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.field-control-group .field-control:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.field-control-group .field-control-btn {
+    position: relative;
+    display: table-cell;
+    width: 1%;
+    vertical-align: middle;
+}
+
+.field-control-btn:last-child > .btn {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-bottom: 5px;
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT FORM - FIELD CONTROL GROUP - BUTTON FILE
+ ***************************************************************************************/
+
+.field-control-btn .btn-file {
+    vertical-align: middle;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.field-control-btn .btn-file > [type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: inherit;
+    opacity: 0;
+    height:100%;
+    width: 100%;
+}
+
+.field-control-btn .btn-file > [type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT FORM - FIELD ERROR
+ ***************************************************************************************/
+
+.field-error {
+    color: rgb(160, 60, 60);
+}
+
+
+.form-options .btn {
+    width: 100%;
+}
+
+@media (min-width: 768px /* Tablets, Desktops */) {
+
+    .form-options .btn {
+        width: 60%;
+    }
+
+}

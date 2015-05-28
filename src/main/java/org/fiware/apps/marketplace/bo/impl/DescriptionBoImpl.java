@@ -34,7 +34,6 @@ package org.fiware.apps.marketplace.bo.impl;
  */
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,6 +57,7 @@ import org.fiware.apps.marketplace.model.validators.DescriptionValidator;
 import org.fiware.apps.marketplace.rdf.RdfIndexer;
 import org.fiware.apps.marketplace.security.auth.DescriptionAuth;
 import org.fiware.apps.marketplace.utils.NameGenerator;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,6 +75,7 @@ public class DescriptionBoImpl implements DescriptionBo {
 	@Autowired private StoreBo storeBo;
 	@Autowired private OfferingDao offeringDao;
 	@Autowired private StoreDao storeDao;
+	@Autowired private SessionFactory sessionFactory;
 	
 	private static final String JENA_ERROR = "Your RDF could not be parsed.";
 		
@@ -184,41 +185,20 @@ public class DescriptionBoImpl implements DescriptionBo {
 				
 				descriptionToBeUpdated.setUrl(updatedDescription.getUrl());
 				
-				// Save the current state
-				List<Offering> previousOfferingsCopy = new ArrayList<Offering>(descriptionToBeUpdated.getOfferings());
-				List<Offering> descriptionOfferings = descriptionToBeUpdated.getOfferings();
-				
 				// Remove previous offerings
+				List<Offering> descriptionOfferings = descriptionToBeUpdated.getOfferings();
 				descriptionOfferings.clear();
+				
+				// At this point, transaction need to be flushed in order to avoid constraints violations
+				// that occur when the embedded offerings has not been updated
+				sessionFactory.getCurrentSession().flush();
 				
 				// Get all the offerings described in the USDL
 				List<Offering> newOfferings = offeringResolver
 						.resolveOfferingsFromServiceDescription(descriptionToBeUpdated);
 				
-				for (Offering updatedOffering: newOfferings) {
-					int index = previousOfferingsCopy.indexOf(updatedOffering);
-					
-					Offering offeringToAdd;
-					
-					if (index < 0) {
-						// A new offering that was not included before in the previous USDL
-						offeringToAdd = updatedOffering;
-					} else {
-						// A old offering that was previously included in the previous USDL
-						offeringToAdd = previousOfferingsCopy.get(index);
-						
-						// We have to update the fields (not to use the generated one to avoid Hibernate exceptions)
-						offeringToAdd.setDescription(updatedOffering.getDescription());
-						offeringToAdd.setDisplayName(updatedOffering.getDisplayName());
-						offeringToAdd.setImageUrl(updatedOffering.getImageUrl());
-						offeringToAdd.setVersion(updatedOffering.getVersion());
-						offeringToAdd.setDisplayName(updatedOffering.getDisplayName());
-						offeringToAdd.setName(updatedOffering.getName());
-					}
-
-					descriptionOfferings.add(offeringToAdd);
-				}
-				
+				descriptionOfferings.addAll(newOfferings);
+								
 				// When the description URL changes, the index must be updated. 
 				rdfIndexer.indexOrUpdateService(descriptionToBeUpdated);
 			}

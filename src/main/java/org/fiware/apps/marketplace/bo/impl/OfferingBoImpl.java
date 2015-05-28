@@ -37,14 +37,17 @@ import java.util.List;
 import org.fiware.apps.marketplace.bo.DescriptionBo;
 import org.fiware.apps.marketplace.bo.OfferingBo;
 import org.fiware.apps.marketplace.bo.StoreBo;
+import org.fiware.apps.marketplace.bo.UserBo;
 import org.fiware.apps.marketplace.dao.OfferingDao;
 import org.fiware.apps.marketplace.exceptions.DescriptionNotFoundException;
 import org.fiware.apps.marketplace.exceptions.NotAuthorizedException;
 import org.fiware.apps.marketplace.exceptions.OfferingNotFoundException;
 import org.fiware.apps.marketplace.exceptions.StoreNotFoundException;
+import org.fiware.apps.marketplace.exceptions.UserNotFoundException;
 import org.fiware.apps.marketplace.model.Description;
 import org.fiware.apps.marketplace.model.Offering;
 import org.fiware.apps.marketplace.model.Store;
+import org.fiware.apps.marketplace.model.User;
 import org.fiware.apps.marketplace.security.auth.OfferingAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +58,7 @@ public class OfferingBoImpl implements OfferingBo {
 	
 	@Autowired private OfferingAuth offeringAuth;
 	@Autowired private OfferingDao offeringDao;
+	@Autowired private UserBo userBo;
 	@Autowired private StoreBo storeBo;
 	@Autowired private DescriptionBo descriptionBo;
 
@@ -198,5 +202,67 @@ public class OfferingBoImpl implements OfferingBo {
 		
 		return offeringDao.getDescriptionOfferingsPage(storeName, descriptionName, offset, max);
 	}
+
+	@Override
+	@Transactional
+	public void bookmark(String storeName, String descriptionName, String offeringName) 
+			throws NotAuthorizedException,StoreNotFoundException, DescriptionNotFoundException, 
+			OfferingNotFoundException {
+		
+		Offering offering = offeringDao.findDescriptionByNameStoreAndDescription(storeName, 
+				descriptionName, offeringName);
+		
+		// Check if the user is allowed to bookmark the offering. An exception will be
+		// risen if the user is not allowed to do it.
+		if (!offeringAuth.canBookmark(offering)) {
+			throw new NotAuthorizedException("bookmark offering");
+		}
+		
+		try {
+			User user = userBo.getCurrentUser();
+			List<Offering> bookmarks = user.getBookmarks();
+			
+			// If the offering is already bookmarked, this operation will remove it
+			// from the bookmarked offerings.
+			if (bookmarks.contains(offering)) {
+				bookmarks.remove(offering);
+			} else {
+				bookmarks.add(offering);
+			}
+			
+			// The user is automatically updated since the method is marked as "Transactional"
+						
+		} catch (UserNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	@Transactional
+	public List<Offering> getAllBookmarkedOfferings() throws NotAuthorizedException {
+		return getBookmarkedOfferingsPage(0, Integer.MAX_VALUE);
+	}
+
+	@Override
+	@Transactional
+	public List<Offering> getBookmarkedOfferingsPage(int offset, int max)
+			throws NotAuthorizedException {
+
+		// Check rights and raise exception if user is not allowed to perform this action
+		if (!offeringAuth.canListBookmarked()) {
+			throw new NotAuthorizedException("list bookmarked offerings");
+		}
+		
+		try {
+			List<Offering> offerings = userBo.getCurrentUser().getBookmarks();
+			int finalElement = offset + max;
+			int checkedMax = finalElement <= offerings.size() ? finalElement : offerings.size();
+			return offerings.subList(offset, checkedMax);
+		} catch (UserNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
 	
 }

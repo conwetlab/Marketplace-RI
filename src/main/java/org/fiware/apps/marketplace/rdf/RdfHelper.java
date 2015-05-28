@@ -61,7 +61,7 @@ public class RdfHelper {
 
 	private static final Logger logger = LoggerFactory.getLogger(RdfHelper.class);
 
-	// TODO resolve prefixes reasonably...
+	// TODO resolve prefixes reasonably depending on the preferences...
 	/**
 	 * Preliminary List of prefixes for queries
 	 */
@@ -246,7 +246,7 @@ public class RdfHelper {
 	public List<String> getObjectUris(Model model, String subject, String predicate) {
 		String query = QUERY_PREFIXES + "SELECT ?x WHERE { <" + subject + "> "
 				+ predicate + " ?x . } ";
-		System.out.println(query.replace(QUERY_PREFIXES, ""));
+		logger.info(query.replace(QUERY_PREFIXES, ""));
 		return queryUris(model, query, "x");
 	}
 

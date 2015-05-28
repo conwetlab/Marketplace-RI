@@ -1,0 +1,102 @@
+@CHARSET "UTF-8";
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT IMAGE THUMBNAIL
+ ***************************************************************************************/
+
+.image-thumbnail {
+    position: relative;
+    display: block;
+    margin: 0px 0px 10px;
+    text-align: center;
+}
+
+.image-thumbnail:last-child {
+    margin-bottom: 0px;
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT IMAGE THUMBNAIL - IMAGE
+ ***************************************************************************************/
+
+.image {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.image.image-circle {
+    border-radius: 50%;
+}
+
+.image.image-rounded {
+    border-radius: 4px;
+}
+
+.image.image-bordered {
+    padding: 5px;
+    background-color: rgb(255, 255, 255);
+    border: solid 1px rgb(210, 210, 210);
+}
+
+.image > .fa {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    text-align: center;
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT IMAGE THUMBNAIL - SIZES
+ ***************************************************************************************/
+
+.image-thumbnail .image {
+    width: 60px;
+    height: 60px;
+}
+
+.image-thumbnail .image > .fa {
+    width: 100%;
+    height: 30px;
+    font-size: 30px;
+}
+
+.image-thumbnail .image > .fa-building {
+    width: 37%;
+}
+
+.image-thumbnail-sm .image {
+    width: 40px;
+    height: 40px;
+}
+
+.image-thumbnail-sm .image > .fa {
+    height: 20px;
+    font-size: 20px;
+}
+
+
+.image-thumbnail-lg .image {
+    width: 120px;
+    height: 120px;
+}
+
+.image-thumbnail-lg .image > .fa {
+    height: 40px;
+    font-size: 40px;
+}
+
+/***************************************************************************************
+ *  DEFAULT THEME - COMPONENT IMAGE THUMBNAIL - CONTEXTUAL CLASSES
+ ***************************************************************************************/
+
+.image.image-default-darker {
+    background-color: rgb(70, 70, 70);
+}
+
+.image.image-primary-ligther {
+    background-color: rgb(80, 190, 250);
+}

@@ -255,15 +255,13 @@ public class DescriptionServiceTest {
 	@Test
 	public void testUpdateDescriptionNotAllowed() throws Exception {
 		
-		Description newDescription = new Description();
-
 		// Mocks
 		Exception e = new NotAuthorizedException("update description");
 		doThrow(e).when(descriptionBoMock).update(STORE_NAME, DESCRIPTION_NAME, description);
 
 		// Call the method
 		Response res = descriptionRegistrationService.
-				updateDescription(STORE_NAME, DESCRIPTION_NAME, newDescription);
+				updateDescription(STORE_NAME, DESCRIPTION_NAME, description);
 
 		// Assertions
 		GenericRestTestUtils.checkAPIError(res, 403, ErrorType.FORBIDDEN, e.getMessage());

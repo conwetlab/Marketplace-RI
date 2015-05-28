@@ -211,7 +211,7 @@ public class Store {
 
 	@Override
 	public int hashCode() {
-		return name.hashCode();
+		return this.name.hashCode();
 	}
 
 	@Override
@@ -223,7 +223,12 @@ public class Store {
 		if (obj instanceof Store) {
 			Store other = (Store) obj;
 			
-			if (id == other.id || name.equals(other.name)) {
+			// Avoid null pointer exceptions...
+			if (this.name == null) {
+				return false;
+			}
+			
+			if (this.name.equals(other.name)) {
 				return true;
 			}			
 		}

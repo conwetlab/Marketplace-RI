@@ -33,6 +33,8 @@ package org.fiware.apps.marketplace.controllers.web;
  */
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
@@ -180,12 +182,16 @@ public class UserDescriptionController extends AbstractController {
         } catch (ValidationException e) {
             logger.info("A form field is not valid", e);
 
-            model.addAttribute("field_storeName", storeName);
-            model.addAttribute("field_displayName", displayName);
-            model.addAttribute("field_url", url);
-            model.addAttribute("field_comment", comment);
+			Map<String, String> formInfo = new HashMap<String, String>();
 
-            model.addAttribute("form_error", e);
+			formInfo.put("storeName", storeName);
+			formInfo.put("displayName", displayName);
+			formInfo.put("url", url);
+			formInfo.put("comment", comment);
+
+			model.addAttribute("form_data", formInfo);
+			model.addAttribute("form_error", e);
+
             view = new ModelAndView("description.create", model);
             builder = Response.status(Status.BAD_REQUEST).entity(view);
         } catch (StoreNotFoundException e) {

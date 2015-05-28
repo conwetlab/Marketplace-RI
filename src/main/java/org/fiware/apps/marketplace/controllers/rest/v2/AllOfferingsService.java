@@ -64,7 +64,9 @@ public class AllOfferingsService {
 	@Produces({"application/xml", "application/json"})
 	@Path("/")	
 	public Response listOfferings(@DefaultValue("0") @QueryParam("offset") int offset,
-			@DefaultValue("100") @QueryParam("max") int max) {
+			@DefaultValue("100") @QueryParam("max") int max,
+			@DefaultValue("false") @QueryParam("bookmarked") boolean bookmarked) {
+		
 		Response response;
 
 		if (offset < 0 || max <= 0) {
@@ -73,10 +75,17 @@ public class AllOfferingsService {
 					//String.format("offset (%d) and/or max (%d) are not valid", offset, max));
 		} else {
 			try {
-				List<Offering> descriptionsPage = offeringBo.getOfferingsPage(offset, max);
-				Offerings returnedOfferings = new Offerings();
-				returnedOfferings.setOfferings(descriptionsPage);
-				response = Response.status(Status.OK).entity(returnedOfferings).build();
+				
+				List<Offering> offeringsPage;
+				
+				// If bookmaked == True, we should only retrieved the bookmaked offerings...
+				if (bookmarked) {
+					offeringsPage = offeringBo.getBookmarkedOfferingsPage(offset, max);
+				} else {
+					offeringsPage = offeringBo.getOfferingsPage(offset, max);
+				}
+				
+				response = Response.status(Status.OK).entity(new Offerings(offeringsPage)).build();
 			} catch (NotAuthorizedException ex) {
 				response = ERROR_UTILS.notAuthorizedResponse(ex);
 			} catch (Exception ex) {

@@ -118,6 +118,11 @@ public class OfferingController extends AbstractController {
 
             model.addAttribute("offering", offering);
             model.addAttribute("title", offering.getDisplayName() + " - " + getContextName());
+            model.addAttribute("currentView", "detail");
+
+            if (offeringBo.getAllBookmarkedOfferings().contains(offering)) {
+                model.addAttribute("bookmark", true);
+            }
 
             view = new ModelAndView("offering.detail", model);
             builder = Response.ok();
@@ -150,4 +155,95 @@ public class OfferingController extends AbstractController {
 
         return builder.entity(view).build();
     }
+
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	@Path("{storeName}/{descriptionName}/{offeringName}/priceplans")
+	public Response pricePlanListView(
+			@PathParam("storeName") String storeName,
+			@PathParam("descriptionName") String descriptionName,
+			@PathParam("offeringName") String offeringName) {
+
+        ModelAndView view;
+        ModelMap model = new ModelMap();
+        Offering offering;
+        ResponseBuilder builder;
+
+        try {
+            model.addAttribute("user", getCurrentUser());
+
+            offering = offeringBo.findOfferingByNameStoreAndDescription(
+                    storeName, descriptionName, offeringName);
+
+            model.addAttribute("offering", offering);
+            model.addAttribute("title", offering.getDisplayName() + " - " + getContextName());
+            model.addAttribute("currentView", "priceplans");
+
+            if (offeringBo.getAllBookmarkedOfferings().contains(offering)) {
+                model.addAttribute("bookmark", true);
+            }
+
+            view = new ModelAndView("offering.priceplan.list", model);
+            builder = Response.ok();
+        } catch (UserNotFoundException e) {
+            logger.warn("User not found", e);
+
+            view = buildErrorView(Status.INTERNAL_SERVER_ERROR, e.getMessage());
+            builder = Response.serverError();
+        } catch (NotAuthorizedException e) {
+            logger.info("User unauthorized", e);
+
+            view = buildErrorView(Status.UNAUTHORIZED, e.getMessage());
+            builder = Response.status(Status.UNAUTHORIZED);
+        } catch (OfferingNotFoundException e) {
+            logger.info("Offering not found", e);
+
+            view = buildErrorView(Status.NOT_FOUND, e.getMessage());
+            builder = Response.status(Status.NOT_FOUND);
+        } catch (StoreNotFoundException e) {
+            logger.info("Store not found", e);
+
+            view = buildErrorView(Status.NOT_FOUND, e.getMessage());
+            builder = Response.status(Status.NOT_FOUND);
+        } catch (DescriptionNotFoundException e) {
+            logger.info("Description not found", e);
+
+            view = buildErrorView(Status.NOT_FOUND, e.getMessage());
+            builder = Response.status(Status.NOT_FOUND);
+        }
+
+		return builder.entity(view).build();
+	}
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("bookmarks")
+    public Response bookmarkListView(
+            @Context HttpServletRequest request) {
+
+        ModelAndView view;
+        ModelMap model = new ModelMap();
+        ResponseBuilder builder;
+        User user;
+
+        try {
+            user = getCurrentUser();
+
+            model.addAttribute("user", user);
+            model.addAttribute("title", "My bookmarks - " + getContextName());
+
+            addFlashMessage(request, model);
+
+            view = new ModelAndView("offering.bookmark.list", model);
+            builder = Response.ok();
+        } catch (UserNotFoundException e) {
+            logger.warn("User not found", e);
+
+            view = buildErrorView(Status.INTERNAL_SERVER_ERROR, e.getMessage());
+            builder = Response.serverError();
+        }
+
+        return builder.entity(view).build();
+    }
+
 }

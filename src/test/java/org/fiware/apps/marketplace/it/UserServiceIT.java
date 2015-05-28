@@ -106,19 +106,18 @@ public class UserServiceIT extends AbstractIT {
 	@Test
 	public void testUserCreationDisplayNameMissing() {
 		Response response = createUser("", "example@example.com", "password!1");
-		// userName is got based on displayName. userName is checked previously
-		checkAPIError(response, 400, "userName", MESSAGE_FIELD_REQUIRED, ErrorType.VALIDATION_ERROR);	
+		checkAPIError(response, 400, "displayName", MESSAGE_FIELD_REQUIRED, ErrorType.VALIDATION_ERROR);	
 	}
 	
 	@Test
-	public void testUserCrationDisplayNameTooLong() {
+	public void testUserCreationDisplayNameTooLong() {
 		Response response = createUser("ABCDEFGHIJKMLNOPQRSTUVWXYZABCDEFGHIJKMLNOPQRSTUVWXYZ", 
 				"example@example.com", "password!1");
 		checkAPIError(response, 400, "displayName", String.format(MESSAGE_TOO_LONG, 30), 
 				ErrorType.VALIDATION_ERROR);	
 	}
 	
-	public void testUserCrationDisplayNameTooShort() {
+	public void testUserCreationDisplayNameTooShort() {
 		Response response = createUser("a", "example@example.com", "password!1");
 		checkAPIError(response, 400, "displayName", String.format(MESSAGE_TOO_SHORT, 3), 
 				ErrorType.VALIDATION_ERROR);	
@@ -149,27 +148,28 @@ public class UserServiceIT extends AbstractIT {
 	}
 	
 	@Test
-	public void testUserCrationPasswordTooLong() {
+	public void testUserCreationPasswordTooLong() {
 		Response response = createUser("FIWARE EXAMPLE", "example@example.com", 
 				"ABCDEFGHIJKMLNOPQRSTUVWXYZABCDEFGHIJKMLNOPQRSTU!1VWXYZ");
 		checkAPIError(response, 400, "password", String.format(MESSAGE_TOO_LONG, 30), ErrorType.VALIDATION_ERROR);	
 	}
 	
-	public void testUserCrationPasswordTooShort() {
+	public void testUserCreationPasswordTooShort() {
 		Response response = createUser("FIWARE EXAMPLE", "example@example.com", "passw1!");
 		checkAPIError(response, 400, "password", String.format(MESSAGE_TOO_SHORT, 8), ErrorType.VALIDATION_ERROR);	
 	}
 	
 	@Test
-	public void testUserCrationCompanyTooLong() {
+	public void testUserCreationCompanyTooLong() {
 		Response response = createUser("FIWARE EXAMPLE", "example@example.com", "password!1", 
 				"ABCDEFGHIJKMLNOPQRSTUVWXYZABCDEFGHIJKMLNOPQRSTU");
 		checkAPIError(response, 400, "company", String.format(MESSAGE_TOO_LONG, 30), ErrorType.VALIDATION_ERROR);	
 	}
 	
-	public void testUserCrationCompanyTooShort() {
+	@Test
+	public void testUserCreationCompanyTooShort() {
 		Response response = createUser("FIWARE EXAMPLE", "example@example.com", "password!1", "a");
-		checkAPIError(response, 400, "company", String.format(MESSAGE_TOO_SHORT, 8), ErrorType.VALIDATION_ERROR);	
+		checkAPIError(response, 400, "company", String.format(MESSAGE_TOO_SHORT, 3), ErrorType.VALIDATION_ERROR);	
 	}
 	
 	

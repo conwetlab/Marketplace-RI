@@ -1,0 +1,25 @@
+<configuration>
+
+	<appender name="LOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		
+		<File>/tmp/wmarket.log</File>
+		<append>true</append>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>/tmp/logs/%d{yyyy/MM,aux}/wmarket.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 1GB -->
+				<maxFileSize>1GB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		
+		<encoder>
+			<pattern>%d{ISO8601,UTC} %-5level [%thread] \(%file:%line\) - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="warn">
+		<appender-ref ref="LOGFILE" />
+	</root>
+	
+</configuration>

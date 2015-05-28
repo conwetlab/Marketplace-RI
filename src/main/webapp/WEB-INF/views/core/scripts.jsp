@@ -1,0 +1,12 @@
+<script src="${ pageContext.request.contextPath }/resources/jquery/js/jquery-1.11.2.js"></script>
+<script src="${ pageContext.request.contextPath }/resources/marketplace/js/main.js"></script>
+<script> app.contextPath = "${ pageContext.request.contextPath }"; </script>
+<script src="${ pageContext.request.contextPath }/resources/marketplace/js/utils.js"></script>
+<script src="${ pageContext.request.contextPath }/resources/marketplace/js/requests.js"></script>
+<script src="${ pageContext.request.contextPath }/resources/marketplace/js/components/alerts.js"></script>
+<script src="${ pageContext.request.contextPath }/resources/marketplace/js/components/stores.js"></script>
+<script src="${ pageContext.request.contextPath }/resources/marketplace/js/components/offerings.js"></script>
+<script src="${ pageContext.request.contextPath }/resources/marketplace/js/forms/validators.js"></script>
+<script src="${ pageContext.request.contextPath }/resources/marketplace/js/forms/fields.js"></script>
+<script src="${ pageContext.request.contextPath }/resources/marketplace/js/forms/validator.js"></script>
+<script src="${ pageContext.request.contextPath }/resources/marketplace/js/shortcuts.js"></script>

@@ -35,10 +35,14 @@ package org.fiware.apps.marketplace.helpers;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.fiware.apps.marketplace.model.Offering;
 import org.fiware.apps.marketplace.model.Description;
+import org.fiware.apps.marketplace.model.PriceComponent;
+import org.fiware.apps.marketplace.model.PricePlan;
 import org.fiware.apps.marketplace.model.Store;
 import org.fiware.apps.marketplace.rdf.RdfHelper;
 import org.fiware.apps.marketplace.utils.NameGenerator;
@@ -88,23 +92,27 @@ public class OfferingResolver {
 		return rdfHelper.getObjectUris(model, offeringUri, "usdl:hasPricePlan");
 	}
 	
+	private List<String> getPriceComponentsUris(Model model, String pricePlanUri) {
+		return rdfHelper.getObjectUris(model, pricePlanUri, "price:hasPriceComponent");
+	}
+	
 	/**
-	 * Gets the title of an offering
+	 * Gets the title of an entity
 	 * @param model USDL
-	 * @param offeringUri The offering URI whose title wants to be retrieved
+	 * @param offeringUri The entity URI whose title wants to be retrieved
 	 * @return The title of the offering
 	 */
-	private String getOfferingTitle(Model model, String offeringUri) {
+	private String getTitle(Model model, String offeringUri) {
 		return rdfHelper.getLiteral(model, offeringUri, "dcterms:title");
 	}
 	
 	/**
-	 * Gets the description of an offering
+	 * Gets the description of an entity
 	 * @param model USDL
-	 * @param offeringUri The offering URI whose description wants to be retrieved
+	 * @param offeringUri The entity URI whose description wants to be retrieved
 	 * @return The description of the offering
 	 */
-	private String getOfferingDescription(Model model, String offeringUri) {
+	private String getDescription(Model model, String offeringUri) {
 		return rdfHelper.getLiteral(model, offeringUri, "dcterms:description");
 	}
 	
@@ -183,14 +191,51 @@ public class OfferingResolver {
 		for (String offeringUri : offeringUris) {
 			
 			Offering offering = new Offering();
-			offering.setDisplayName(getOfferingTitle(model, offeringUri));
+			offering.setDisplayName(getTitle(model, offeringUri));
 			// Maybe the name should depends on the creator and the version...
 			offering.setName(NameGenerator.getURLName(offering.getDisplayName()));
 			offering.setUri(offeringUri);
 			offering.setDescribedIn(offeringDescription);
 			offering.setVersion(getOfferingVersion(model, offeringUri));
-			offering.setDescription(getOfferingDescription(model, offeringUri));
+			offering.setDescription(getDescription(model, offeringUri));
 			offering.setImageUrl(getOfferingImageUrl(model, offeringUri));
+			
+			// Set price plans (offerings have one or more price plans)
+			List<String> pricePlansUris = getPricePlanUris(model, offeringUri);
+			Set<PricePlan> pricePlans = new HashSet<>();
+			
+			for (String pricePlanUri: pricePlansUris) {
+				
+				PricePlan pricePlan = new PricePlan();
+				pricePlan.setTitle(getTitle(model, pricePlanUri));
+				pricePlan.setComment(getDescription(model, pricePlanUri));
+				pricePlan.setOffering(offering);
+				
+				List<String> priceComponentsUris = getPriceComponentsUris(model, pricePlanUri);
+				Set<PriceComponent> priceComponents = new HashSet<>();
+				
+				for (String priceComponentUri: priceComponentsUris) {
+			
+					PriceComponent priceComponent = new PriceComponent();
+					priceComponent.setPricePlan(pricePlan);
+					priceComponent.setTitle(getTitle(model, priceComponentUri));
+					priceComponent.setComment(getDescription(model, priceComponentUri));
+					priceComponent.setCurrency(rdfHelper.getLiteral(model, priceComponentUri, "gr:hasCurrency"));
+					priceComponent.setUnit(rdfHelper.getLiteral(model, priceComponentUri, "gr:hasUnitOfMeasurement"));
+					priceComponent.setValue(Float.parseFloat(
+							rdfHelper.getLiteral(model, priceComponentUri, "gr:hasCurrencyValue")));
+					
+					priceComponents.add(priceComponent);
+				}
+				
+				// Update price components with the retrieved price components
+				pricePlan.setPriceComponents(priceComponents);
+				
+				pricePlans.add(pricePlan);
+			}
+			
+			// Update the price plans set with the retrieved price plans
+			offering.setPricePlans(pricePlans);
 			
 			offerings.add(offering);
 		}

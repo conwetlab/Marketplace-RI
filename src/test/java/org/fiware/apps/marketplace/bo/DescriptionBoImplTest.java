@@ -55,6 +55,8 @@ import org.fiware.apps.marketplace.model.User;
 import org.fiware.apps.marketplace.model.validators.DescriptionValidator;
 import org.fiware.apps.marketplace.rdf.RdfIndexer;
 import org.fiware.apps.marketplace.security.auth.DescriptionAuth;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -72,6 +74,7 @@ public class DescriptionBoImplTest {
 	@Mock private UserBo userBoMock;
 	@Mock private OfferingResolver offeringResolverMock;
 	@Mock private RdfIndexer rdfIndexerMock;
+	@Mock private SessionFactory sessionFactory;
 	@InjectMocks private DescriptionBoImpl descriptionBo;
 
 	private static final String STORE_NAME = "store";
@@ -83,7 +86,12 @@ public class DescriptionBoImplTest {
 
 	@Before 
 	public void setUp() {
+		
 		MockitoAnnotations.initMocks(this);
+		
+		Session session = mock(Session.class);
+		when(sessionFactory.getCurrentSession()).thenReturn(session);
+		
 		this.descriptionBo = spy(this.descriptionBo);
 	}
 
@@ -450,18 +458,6 @@ public class DescriptionBoImplTest {
 			// updatedOffering should always contain the information returned by offeringResolver
 			compareOfferings(updatedOffering, newOffering);
 
-			if (storedOfferingURI.equals(newOfferingURI)) {
-				// If the offering existed previously, the instance should not change
-				assertThat(updatedOffering).isSameAs(storedOffering);
-				assertThat(updatedOffering).isNotSameAs(newOffering);
-				// ID should be retained when the offering is updated
-				assertThat(updatedOffering.getId()).isEqualTo(storedOffering.getId());
-			} else {
-				// If the offering did not exist previously, the instance should change
-				assertThat(updatedOffering).isNotSameAs(storedOffering);
-				assertThat(updatedOffering).isSameAs(newOffering);
-			}
-
 		} catch (Exception ex) {
 			fail("Exception not expected", ex);
 		}
@@ -532,14 +528,10 @@ public class DescriptionBoImplTest {
 		// Check first offering (it previously exist in the system so they're the same instance)
 		Offering updatedOffering = storedDescription.getOfferings().get(0);
 		compareOfferings(updatedOffering, newOffering1);
-		assertThat(updatedOffering).isSameAs(storedOffering);
-		assertThat(updatedOffering).isNotSameAs(newOffering1);
 
 		// Check second offering (it does not exist in the system so they are not the same instance)
 		updatedOffering = storedDescription.getOfferings().get(1);
 		compareOfferings(updatedOffering, newOffering2);
-		assertThat(updatedOffering).isNotSameAs(storedOffering);
-		assertThat(updatedOffering).isSameAs(newOffering2);
 	}
 	
 	private void testUpdateRdfError(Exception indexerException) {

@@ -108,7 +108,7 @@ public class Environment {
 			String projectDirectory = Paths.get(".").toAbsolutePath().toString();
 			String modifiedWarPath = projectDirectory + "/target/" + MODIFIED_WAR_NAME;
 			
-		    Path originalWar = Paths.get(projectDirectory + "/target/FiwareMarketplace.war");
+		    Path originalWar = Paths.get(projectDirectory + "/target/WMarket.war");
 		    Path modifiedWar = Paths.get(modifiedWarPath);
 		    Files.copy(originalWar, modifiedWar, StandardCopyOption.REPLACE_EXISTING);
 		    
@@ -120,7 +120,7 @@ public class Environment {
 	        fs.close();
 	        
 	        // Add modified WAR       
-			tomcat.addWebapp("FiwareMarketplace", modifiedWarPath);
+			tomcat.addWebapp("WMarket", modifiedWarPath);
 		} catch (Exception ex) {
 			// This will prevent test from starting...
 			throw new RuntimeException(ex);
@@ -184,6 +184,9 @@ public class Environment {
 	 * @throws ManagedProcessException If an error arises when the database was being cleaned
 	 */
 	public void cleanDB() throws ManagedProcessException {
+		embeddedDB.run("DELETE FROM price_components;", "root", null, DATABASE);
+		embeddedDB.run("DELETE FROM price_plans;", "root", null, DATABASE);
+		embeddedDB.run("DELETE FROM bookmarks;", "root", null, DATABASE);
 		embeddedDB.run("DELETE FROM offerings;", "root", null, DATABASE);
 		embeddedDB.run("DELETE FROM descriptions;", "root", null, DATABASE);
 		embeddedDB.run("DELETE FROM stores;", "root", null, DATABASE);

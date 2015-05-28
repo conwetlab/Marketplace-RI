@@ -86,7 +86,7 @@ public class OfferingDaoImpl extends MarketplaceHibernateDao implements Offering
 				.setParameter("offeringName", offeringName)
 				.list();
 		
-		if (offerings.size() == 0) {
+		if (offerings.isEmpty()) {
 			throw new OfferingNotFoundException(String.format("Offering %s not found in "
 					+ "description %s (Store: %s)", offeringName, descriptionName, storeName));
 		} else {
@@ -102,8 +102,8 @@ public class OfferingDaoImpl extends MarketplaceHibernateDao implements Offering
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Offering> getOfferingsPage(int offset, int max) {
-		return getSession()
-				.createCriteria(Offering.class)
+		// Avoid Hibernate Null Pointer Exception
+		return getSession().createQuery("FROM " + TABLE_NAME)
 				.setFirstResult(offset)
 				.setMaxResults(max)
 				.list();
